@@ -38,30 +38,37 @@ Request Body:
 
 
 Visualizza libri
+
 Metodo: GET
+
 URL: /api/libri
+
 Response: Lista di tutti i libri
+
 Cerca libro per titolo
+
 Metodo: GET
+
 URL: /api/libri/cerca
+
 Parametri: titolo
+
 Visualizza libro per ID
+
 Metodo: GET
+
 URL: /api/libri/{id}
+
 Response: Dettagli del libro con id specificato
+
 Esegui il progetto
+
 Avvia il progetto con Spring Boot.
+
 Usa Postman o cURL per testare gli endpoint.
+
 Conclusioni
+
 API RESTful per la gestione di una libreria. Supporta operazioni di aggiunta, visualizzazione e ricerca di libri.
 
 
-
-3. Salva il file con il nome `README.md`.
-
-4. Ora puoi fare un commit e pushare il file su GitHub:
-
-```bash
-git add README.md
-git commit -m "Aggiungi README per il progetto LibreriaRest API"
-git push origin main
