@@ -20,7 +20,7 @@ API per la gestione di una libreria con Spring Boot e JDBC Template.
        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
        dataSource.setUrl("jdbc:mysql://localhost:3306/libreriarest");
        dataSource.setUsername("root");
-       dataSource.setPassword("Reddino24");
+       dataSource.setPassword("");
        return dataSource;
    }
 
