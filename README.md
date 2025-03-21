@@ -1,103 +1,133 @@
-# Esercizio con GET e POST Mapping con JdbcTemplate
+# LibreriaRest API
 
-Questo esercizio dimostra come utilizzare **Spring Boot** con **JdbcTemplate** per gestire richieste **GET** e **POST** in un'applicazione che interagisce con un database MySQL.
+Questa è un'applicazione RESTful che gestisce una libreria. La libreria utilizza un database MySQL e JDBC Template per interagire con i dati. La funzionalità di questa API include l'aggiunta di libri, la visualizzazione di tutti i libri, la ricerca di libri per titolo e la visualizzazione di libri per ID.
 
-## Tecnologie Utilizzate
+## Tecnologie utilizzate
+
 - **Spring Boot**
-- **JdbcTemplate**
+- **JDBC Template**
 - **MySQL**
-- **Maven**
+- **Spring Web**
 
-## Setup del Progetto
+## Setup del progetto
 
-### 1. Creazione del Progetto
-Crea un progetto Spring Boot con le seguenti dipendenze:
-- Spring Web
-- Spring Data JDBC
-- MySQL Driver
+1. **Configurazione del database:**
+   Assicurati di avere un database MySQL chiamato `libreriarest` con una tabella chiamata `libri` che ha almeno due colonne: `titolo` e `autore`.
 
-### 2. Configurazione del Database
-Imposta il tuo database MySQL e crea la tabella `libri`:
-```sql
-CREATE TABLE libri (
-  id INT AUTO_INCREMENT PRIMARY KEY, 
-  titolo VARCHAR(255), 
-  autore VARCHAR(255)
-);
+   Configura la connessione al database nel file `DatabaseConfig.java`:
+
+   ```java
+   @Configuration
+   public class DatabaseConfig {
+       @Bean
+       public DataSource dataSource() {
+           DriverManagerDataSource dataSource = new DriverManagerDataSource();
+           dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+           dataSource.setUrl("jdbc:mysql://localhost:3306/libreriarest");
+           dataSource.setUsername("root");
+           dataSource.setPassword("Reddino24");
+           return dataSource;
+       }
+   }
 
 
+Controller API (LibroController): Il controller fornisce i seguenti endpoint per interagire con la libreria:
 
-3. Configurazione di JdbcTemplate
-Nel tuo repository, usa JdbcTemplate per interagire con il database:
+Aggiungi un libro
+Metodo: POST
 
-java
-Copia codice
-@Repository
-public class BookRepository {
+Endpoint: /api/libri
 
-    private final JdbcTemplate jdbcTemplate;
+Descrizione: Aggiungi un nuovo libro alla libreria.
 
-    @Autowired
-    public BookRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+Esempio di richiesta:
 
-    public List<Book> getAllBooks() {
-        return jdbcTemplate.query("SELECT * FROM libri", new BeanPropertyRowMapper<>(Book.class));
-    }
 
-    public void addBook(Book book) {
-        String query = "INSERT INTO libri (titolo, autore) VALUES (?, ?)";
-        jdbcTemplate.update(query, book.getTitolo(), book.getAutore());
-    }
+{
+  "titolo": "Il grande Gatsby",
+  "autore": "F. Scott Fitzgerald"
 }
 
 
+Codice del controller:
 
-4. Creazione del Controller
-Crea un controller con i mapping GET e POST:
+@PostMapping
+public void aggiungiLibro(@RequestBody Libro libro) {
+    String sql = "INSERT INTO libri (titolo, autore) VALUES (?, ?)";
+    jdbcTemplate.update(sql, libro.getTitolo(), libro.getAutore());
+}
 
-java
-Copia codice
-@RestController
-@RequestMapping("/libri")
-public class BookController {
+Visualizza tutti i libri
+Metodo: GET
+Endpoint: /api/libri
+Descrizione: Visualizza tutti i libri nella libreria.
+Codice del controller
 
-    private final BookRepository bookRepository;
+@GetMapping
+public List<Libro> visualizzaLibri() {
+    String sql = "SELECT * FROM libri";
+    return jdbcTemplate.query(sql, (rs, rowNum) -> new Libro(
+        rs.getInt("id"),
+        rs.getString("titolo"),
+        rs.getString("autore")
+    ));
+}
 
-    @Autowired
-    public BookController(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
+Cerca un libro per titolo
+Metodo: GET
+Endpoint: /api/libri/cerca
+Descrizione: Cerca libri per titolo.
+Parametri: titolo (stringa da cercare)
 
-    @GetMapping
-    public List<Book> getAllBooks() {
-        return bookRepository.getAllBooks();
-    }
+Codice del controller:
 
-    @PostMapping
-    public void addBook(@RequestBody Book book) {
-        bookRepository.addBook(book);
-    }
+@GetMapping("/cerca")
+public List<Libro> cercaLibro(@RequestParam String titolo) {
+    String sql = "SELECT * FROM libri WHERE titolo LIKE ?";
+    return jdbcTemplate.query(sql, new Object[]{"%" + titolo + "%"}, (rs, rowNum) -> new Libro(
+        rs.getInt("id"),
+        rs.getString("titolo"),
+        rs.getString("autore")
+    ));
 }
 
 
+Visualizza libro per ID
+Metodo: GET
+Endpoint: /api/libri/{id}
+Descrizione: Visualizza un libro specifico tramite ID.
+Parametri: id (ID del libro)
+Codice del controller
 
-5. Test API
-GET per ottenere tutti i libri:
+@GetMapping("/{id}")
+public Libro visuaLibroPerId(@PathVariable int id) {
+    String sql = "SELECT * FROM libri WHERE id = ?";
+    return jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) -> new Libro(
+        rs.getInt("id"),
+        rs.getString("titolo"),
+        rs.getString("autore")
+    ));
+}
 
-bash
-Copia codice
-curl -X GET http://localhost:8080/libri
-POST per aggiungere un nuovo libro:
 
-bash
-Copia codice
-curl -X POST http://localhost:8080/libri -d '{"titolo":"Titolo","autore":"Autore"}'
-Esecuzione del Progetto
-Avvia l'applicazione con il comando Maven:
+Esegui il progetto
+Avvia il progetto utilizzando Spring Boot.
+Testa gli endpoint utilizzando Postman o cURL per inviare richieste POST e GET.
+Conclusioni
+Questo progetto fornisce un'API semplice per interagire con una libreria utilizzando Spring Boot e JDBC Template. È possibile aggiungere libri, visualizzarli, cercarli per titolo e recuperare dettagli per ID.
 
-bash
-Copia codice
-mvn spring-boot:run
-L'applicazione sarà disponibile su http://localhost:8080
+
+
+### Come funziona:
+
+1. **Aggiungi un libro**: Questo endpoint consente di aggiungere un libro al database inviando una richiesta `POST` con un JSON contenente il titolo e l'autore del libro.
+   
+2. **Visualizza tutti i libri**: Con una richiesta `GET` a `/api/libri`, ottieni tutti i libri registrati nella libreria.
+
+3. **Cerca un libro**: Puoi cercare i libri che contengono una determinata parola nel titolo tramite il parametro `titolo`.
+
+4. **Visualizza libro per ID**: Permette di recuperare informazioni di un libro specifico utilizzando il suo ID.
+
+Se vuoi aggiungere altro o apportare modifiche al README, fammi sapere!
+
+
