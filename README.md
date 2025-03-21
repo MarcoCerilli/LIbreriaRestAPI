@@ -57,6 +57,7 @@ public void aggiungiLibro(@RequestBody Libro libro) {
     jdbcTemplate.update(sql, libro.getTitolo(), libro.getAutore());
 }
 
+
 Visualizza tutti i libri
 Metodo: GET
 Endpoint: /api/libri
