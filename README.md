@@ -24,7 +24,7 @@ API per la gestione di una libreria con Spring Boot e JDBC Template.
        return dataSource;
    }
 
-2.API Endpoints
+2. API Endpoints
 
 Aggiungi libro
 
@@ -38,18 +38,18 @@ Aggiungi libro
 }
 
 
-Visualizza libri  -Metodo: GET   -URL: /api/libri   -Response: Lista di tutti i libri
+Visualizza libri          -Metodo: GET                -URL: /api/libri              -Response: Lista di tutti i libri
 
-Cerca libro per titolo   -Metodo: GET   -URL: /api/libri/cerca  -Parametri: titolo
+Cerca libro per titolo                  -Metodo: GET             -URL: /api/libri/cerca               -Parametri: titolo
 
-Visualizza libro per ID   -Metodo: GET   -URL: /api/libri/{id}  -Response: Dettagli del libro con id specificato
+Visualizza libro per ID               -Metodo: GET                -URL: /api/libri/{id}           -Response: Dettagli del libro con id specificato
 
 
 Esegui il progetto
 
-Avvia il progetto con Spring Boot.
+1. Avvia il progetto con Spring Boot.
 
-Usa Postman o cURL per testare gli endpoint.
+2. Usa Postman o cURL per testare gli endpoint.
 
 
 Conclusioni
