@@ -45,10 +45,10 @@ Cerca libro per titolo                  -Metodo: GET             -URL: /api/libr
 Visualizza libro per ID               -Metodo: GET                -URL: /api/libri/{id}           -Response: Dettagli del libro con id specificato
 
 
+
 Esegui il progetto
 
 1. Avvia il progetto con Spring Boot.
-
 2. Usa Postman o cURL per testare gli endpoint.
 
 
