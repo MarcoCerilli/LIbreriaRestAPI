@@ -18,13 +18,14 @@ Crea un progetto Spring Boot con le seguenti dipendenze:
 
 ### 2. Configurazione del Database
 Imposta il tuo database MySQL e crea la tabella `libri`:
-
 ```sql
 CREATE TABLE libri (
   id INT AUTO_INCREMENT PRIMARY KEY, 
   titolo VARCHAR(255), 
   autore VARCHAR(255)
 );
+
+
 
 3. Configurazione di JdbcTemplate
 Nel tuo repository, usa JdbcTemplate per interagire con il database:
@@ -50,6 +51,9 @@ public class BookRepository {
         jdbcTemplate.update(query, book.getTitolo(), book.getAutore());
     }
 }
+
+
+
 4. Creazione del Controller
 Crea un controller con i mapping GET e POST:
 
@@ -76,6 +80,9 @@ public class BookController {
         bookRepository.addBook(book);
     }
 }
+
+
+
 5. Test API
 GET per ottenere tutti i libri:
 
