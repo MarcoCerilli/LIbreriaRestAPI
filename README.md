@@ -38,20 +38,11 @@ Aggiungi libro
 }
 
 
-Visualizza libri
--Metodo: GET
--URL: /api/libri
--Response: Lista di tutti i libri
+Visualizza libri  -Metodo: GET   -URL: /api/libri   -Response: Lista di tutti i libri
 
--Cerca libro per titolo
--Metodo: GET
--URL: /api/libri/cerca
--Parametri: titolo
+Cerca libro per titolo   -Metodo: GET   -URL: /api/libri/cerca  -Parametri: titolo
 
-Visualizza libro per ID
--Metodo: GET
--URL: /api/libri/{id}
--Response: Dettagli del libro con id specificato
+Visualizza libro per ID   -Metodo: GET   -URL: /api/libri/{id}  -Response: Dettagli del libro con id specificato
 
 
 Esegui il progetto
